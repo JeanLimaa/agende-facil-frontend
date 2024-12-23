@@ -1,51 +1,13 @@
-"use client";
-
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
+//"use client"
+import React from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { usePathname, useRouter } from "next/navigation";
-import CategoryComponent from "@/components/client-appointments/steps/children-components/CategoryComponent";
-import ServicesComponent from "@/components/client-appointments/steps/children-components/ServicesComponent";
-import ProfessionalComponent from "@/components/client-appointments/steps/children-components/ProfessionalComponent";
-import HoursComponent from "@/components/client-appointments/steps/children-components/HoursComponent";
-import ConfirmationComponent from "@/components/client-appointments/steps/children-components/ConfirmationComponent";
-import PaymentComponent from "@/components/client-appointments/steps/children-components/PaymentComponent";
-
-interface Step {
-    stepTitle: string;
-    contentTitle: string;
-    description: string;
-    link: string;
-}
-
-const steps: Step[] = [
-    { stepTitle: "Categoria", contentTitle: "Escolha a Categoria", description: "Selecione a categoria do serviço.", link: "categorias" },
-    { stepTitle: "Serviço", contentTitle: "Escolha o Serviço", description: "Escolha o serviço desejado.", link: "servicos" },
-    { stepTitle: "Profissional", contentTitle: "Escolha o Profissional", description: "Selecione o profissional disponível.", link: "profissional" },
-    { stepTitle: "Horário", contentTitle: "Escolha o Horário", description: "Selecione um horário disponível.", link: "horarios", },
-    { stepTitle: "Pagamento", contentTitle: "Realize o Pagamento", description: "Realize o pagamento.", link: "pagamento" },
-    { stepTitle: "Confirmação", contentTitle: "Realize a confirmação", description: "Confirme os detalhes do agendamento.", link: "confirmar" },
-];
+import { steps } from "@/constants/steps.constant";
+import { useStepsStore } from "@/store/StepsStore";
+import { headers } from "next/headers";
 
 export default function StepsLayout({children}: Readonly<{children: React.ReactNode}>) {
-    const [currentStep, setCurrentStep] = useState(0);
-    const pathname = usePathname();
-    const router = useRouter();
-
-    // Navega para o próximo link
-    const navigateToStep = (stepIndex: number) => {
-        setCurrentStep(stepIndex);
-        const newPathname = pathname.split("/").slice(0, -1).join("/");
-        router.push(`${newPathname}/${steps[stepIndex].link}`);
-    };
-
-    const handleNext = () => {
-        if (currentStep < steps.length - 1) navigateToStep(currentStep + 1);
-    };
-
-    const handleBack = () => {
-        if (currentStep > 0) navigateToStep(currentStep - 1);
-    };
+    const url = headers().get("x-url")?.split("/").pop();
+    const currentStep = steps.findIndex((step) => step.link === url);
 
     return (
         <div className="flex flex-col items-center gap-6 p-4">
@@ -82,12 +44,12 @@ export default function StepsLayout({children}: Readonly<{children: React.ReactN
                 </CardHeader>
                 <CardContent>{children}</CardContent>
                 <CardFooter className="flex justify-between">
-                    <Button variant="outline" onClick={handleBack} disabled={currentStep === 0}>
+{/*                     <Button variant="outline" onClick={handleBack} disabled={currentStep === 0}>
                         Voltar
                     </Button>
                     <Button onClick={handleNext} disabled={currentStep === steps.length - 1}>
                         {currentStep === steps.length - 1 ? "Finalizar" : "Próximo"}
-                    </Button>
+                    </Button> */}
                 </CardFooter>
             </Card>
 

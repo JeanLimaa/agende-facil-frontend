@@ -4,7 +4,7 @@ import api from '@/services/apiService';
 
 export default async function ClienteIdPage({params}: AppointmentsProps) {
   const response = await api.get(`/company/${params.linkName}`);
-
+  console.log(response);
   if (response.status !== 200) {
     return {
       notFound: true,

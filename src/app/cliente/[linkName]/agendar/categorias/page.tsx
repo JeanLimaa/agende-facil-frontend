@@ -1,10 +1,9 @@
-import CategoryComponent from "@/components/client-appointments/steps/children-components/CategoryComponent";
-import { Category } from "@/interfaces/appointments/api-data/Category.interface";
+import CategoryComponent from "@/components/client-appointments/steps/children-components/Category/CategoryComponent";
 import { AppointmentsProps } from "@/interfaces/appointments/appointments.interface";
 import api from "@/services/apiService";
 
 export default function CategoryPage({params}: AppointmentsProps) {
-    const categorysPromise = api.get(`/category/list/${params.linkName}`);
+    const promiseData = api.get(`/category/list/${params.linkName}`);
 
-    return <CategoryComponent dataPromise={categorysPromise} />;
+    return <CategoryComponent dataPromise={promiseData} />
 }
