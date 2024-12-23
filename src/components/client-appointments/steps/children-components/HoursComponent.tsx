@@ -4,19 +4,23 @@ import { AxiosResponse } from "axios";
 import { ChevronRight } from "lucide-react";
 import { use } from "react";
 
+interface HoursEmployee {
+    availableTimes: string[];
+}
+
 export interface HoursComponentProps {
-    dataPromise: Promise<AxiosResponse<Service[]>>;
+    dataPromise: Promise<HoursEmployee>;
 }
 
 export default function HoursComponent({dataPromise}: HoursComponentProps){
-    const data = use(dataPromise).data;
+    const data = use(dataPromise);
     
     return (
         <div>
-            {data.map((item) => {
+            {data.availableTimes.map((hour) => {
                 return (
-                    <div key={item.id} className="flex items-center justify-between p-2 border-b border-gray-200">
-                        <h3 className="font-semibold text-xl">{item.name}</h3>
+                    <div key={hour} className="flex items-center justify-between p-2 border-b border-gray-200">
+                        <h3 className="font-semibold text-xl">{hour}</h3>
                     </div>
                 )
             })}

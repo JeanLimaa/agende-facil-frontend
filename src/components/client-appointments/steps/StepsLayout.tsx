@@ -3,12 +3,12 @@ import React from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { steps } from "@/constants/steps.constant";
 import { useStepsStore } from "@/store/StepsStore";
-import { headers } from "next/headers";
 
 export default function StepsLayout({children}: Readonly<{children: React.ReactNode}>) {
-    const url = headers().get("x-url")?.split("/").pop();
-    const currentStep = steps.findIndex((step) => step.link === url);
-
+/*     const url = headers().get("x-url")?.split("/").pop();
+    const currentStep = steps.findIndex((step) => step.link === url); */
+    const currentStep = useStepsStore.getState().currentStep;
+    console.log(currentStep);
     return (
         <div className="flex flex-col items-center gap-6 p-4">
             {/* Stepper Indicators */}

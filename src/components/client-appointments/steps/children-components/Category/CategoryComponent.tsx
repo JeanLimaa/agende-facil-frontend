@@ -11,7 +11,7 @@ export interface CategoryComponentProps {
 
 export default function CategoryComponent({dataPromise}: CategoryComponentProps){
     const data = use(dataPromise).data;
-    
+
     return (
         <div>
             {data.map((item: Category) => {

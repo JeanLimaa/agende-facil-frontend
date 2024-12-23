@@ -3,8 +3,8 @@ import ProfessionalComponent from "@/components/client-appointments/steps/childr
 import api from "@/services/apiService";
 import { useStepsStore } from "@/store/StepsStore";
 
-async function getHours(employeId: string) {
-    return (await api.get(`/employee-services/list/${employeId}`)).data;
+async function getHours(employeId: string){
+    return (await api.get(`/employee/${employeId}/available-times?date=2024-12-23&serviceId=9`)).data;
 }
 
 export default function HoursPage(){

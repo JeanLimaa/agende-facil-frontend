@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 
 export function Btn({itemId}: Readonly<{itemId: number}>){
-    const navigateToNextStepWithData = navigateToNextStep.bind(null, "servico", itemId);
+    const navigateToNextStepWithData = navigateToNextStep.bind(null, "profissional", itemId);
     
     return(
         <form action={navigateToNextStepWithData}>

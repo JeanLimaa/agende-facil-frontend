@@ -6,6 +6,8 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 
 export default function ServicesPage(){
+    useStepsStore.setState({currentStep: 1});
+
     const stepsStore = useStepsStore.getState();
     const categoryId = stepsStore.stepData.categoria;
 
