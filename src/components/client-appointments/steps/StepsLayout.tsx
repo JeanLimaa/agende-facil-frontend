@@ -1,60 +1,92 @@
-//"use client"
-import React from "react";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { steps } from "@/constants/steps.constant";
-import { useStepsStore } from "@/store/StepsStore";
+"use client"
 
-export default function StepsLayout({children}: Readonly<{children: React.ReactNode}>) {
-/*     const url = headers().get("x-url")?.split("/").pop();
-    const currentStep = steps.findIndex((step) => step.link === url); */
-    const currentStep = useStepsStore.getState().currentStep;
-    console.log(currentStep);
+import React, { Suspense, useEffect, useState } from 'react';
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { steps, StepType as Step } from '@/constants/steps.constant';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft } from 'lucide-react';
+import { StepIndicator } from './StepsIndicator';
+import { StepData } from './types/step-data.interface';
+import { Skeleton } from './Skeleton';
+
+const Scheduling: React.FC = () => {
+    const [step, setStep] = useState<Step>('category');
+    const [stepData, setStepData] = useState<StepData>({
+        categoryId: '',
+        serviceId: '',
+        professionalId: '',
+        hours: '',
+    });
+
+    const currentStep = steps.findIndex((s) => s.name === step);
+
+    const nextStep = () => {
+        setStep(steps[currentStep + 1].name);
+    };
+
+    const previousStep = () => {
+        setStep(steps[currentStep - 1].name);
+    };
+
+    const navigateToStep = (stepIndex: number) => {
+        if (stepIndex < 0 || stepIndex >= steps.length || stepIndex >= currentStep) return;
+
+        setStep(steps[stepIndex].name);
+    }
+
+    const handleDataUpdate = (field: keyof StepData, value: string) => {
+        setStepData((prev) => ({ ...prev, [field]: value }));
+    };
+
+    const CurrentComponent = steps[currentStep].component;
+
+    // Add confirmation before unloading the page if the user has advanced in steps
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (currentStep > 0) {
+                e.preventDefault();
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [currentStep]);
+
     return (
         <div className="flex flex-col items-center gap-6 p-4">
-            {/* Stepper Indicators */}
-            <div className="flex justify-center gap-10 w-full">
-                {steps.map((step, index) => (
-                    <div key={index} className="flex flex-col items-center">
-                        <div
-                            className={`w-8 h-8 flex items-center justify-center rounded-full text-white font-bold ${
-                                index === currentStep
-                                    ? "bg-blue-600"
-                                    : index < currentStep
-                                    ? "bg-green-500"
-                                    : "bg-gray-300"
-                            }`}
-                        >
-                            {index + 1}
-                        </div>
-                        <span
-                            className={`mt-2 text-sm ${
-                                index === currentStep ? "text-blue-600 font-semibold" : "text-gray-500"
-                            }`}
-                        >
-                            {step.stepTitle}
-                        </span>
-                    </div>
-                ))}
-            </div>
+            <StepIndicator currentStep={currentStep} navigateToStep={navigateToStep} />
 
-            {/* Step Content */}
-            <Card className="w-full max-w-md shadow-md">
+            <Card className="w-full max-w-4xl shadow-md">
                 <CardHeader>
                     <h2 className="text-xl font-bold text-center">{steps[currentStep].contentTitle}</h2>
                 </CardHeader>
-                <CardContent>{children}</CardContent>
+                <CardContent>
+                    <Suspense fallback={<Skeleton />}>
+                        <CurrentComponent
+                            onNext={nextStep}
+                            onPrevious={previousStep}
+                            onUpdate={handleDataUpdate}
+                            stepData={stepData}
+                        />
+                    </Suspense>
+                </CardContent>
                 <CardFooter className="flex justify-between">
-{/*                     <Button variant="outline" onClick={handleBack} disabled={currentStep === 0}>
-                        Voltar
-                    </Button>
-                    <Button onClick={handleNext} disabled={currentStep === steps.length - 1}>
-                        {currentStep === steps.length - 1 ? "Finalizar" : "Próximo"}
-                    </Button> */}
+                    {currentStep > 0 && <Button
+                        variant="ghost"
+                        className='text-xs text-gray-400'
+                        onClick={previousStep}
+                    >
+                        <ChevronLeft />Voltar
+                    </Button>}
                 </CardFooter>
             </Card>
 
-            {/* Descrição */}
             <p className="text-gray-600 text-center">{steps[currentStep].description}</p>
         </div>
     );
-}
+};
+
+export default Scheduling;
