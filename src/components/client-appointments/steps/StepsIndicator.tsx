@@ -10,11 +10,11 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep, navig
       {steps.map((step, index) => (
         <div key={index} className="flex flex-col items-center">
           <div
-            className={`w-8 h-8 flex items-center justify-center rounded-full text-white font-bold cursor-pointer ${
+            className={`w-8 h-8 flex items-center justify-center rounded-full text-white font-bold ${
               index === currentStep
-                ? "bg-blue-600"
+                ? "bg-blue-600 cursor-not-allowed"
                 : index < currentStep
-                ? "bg-green-500"
+                ? "bg-green-500 cursor-pointer"
                 : "bg-gray-300 cursor-not-allowed"
             }`}
             onClick={() => navigateToStep(index)}
