@@ -8,53 +8,20 @@ import { ChevronLeft } from 'lucide-react';
 import { StepIndicator } from './StepsIndicator';
 import { StepData } from './types/step-data.interface';
 import { Skeleton } from './Skeleton';
+import { useAppointment } from '@/hooks/useAppointment';
 
 const Scheduling: React.FC = () => {
-    const [step, setStep] = useState<Step>('category');
-    const [stepData, setStepData] = useState<StepData>({
-        categoryId: '',
-        serviceId: '',
-        professionalId: '',
-        hours: '',
-    });
-
-    const currentStep = steps.findIndex((s) => s.name === step);
-
-    const nextStep = () => {
-        setStep(steps[currentStep + 1].name);
-    };
-
-    const previousStep = () => {
-        setStep(steps[currentStep - 1].name);
-    };
-
-    const navigateToStep = (stepIndex: number) => {
-        if (stepIndex < 0 || stepIndex >= steps.length || stepIndex >= currentStep) return;
-
-        setStep(steps[stepIndex].name);
-    }
-
-    const handleDataUpdate = (field: keyof StepData, value: string) => {
-        setStepData((prev) => ({ ...prev, [field]: value }));
-    };
-
-    const CurrentComponent = steps[currentStep].component;
-
-    // Add confirmation before unloading the page if the user has advanced in steps
-    useEffect(() => {
-        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-            if (currentStep > 0) {
-                e.preventDefault();
-            }
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, [currentStep]);
-
+    const {
+        currentStep,
+        stepData,
+        nextStep,
+        previousStep,
+        navigateToStep,
+        handleDataUpdate,
+        CurrentComponent,
+        handleConfirm
+    } = useAppointment();
+    
     return (
         <div className="flex flex-col items-center gap-6 p-4">
             <StepIndicator currentStep={currentStep} navigateToStep={navigateToStep} />
@@ -81,6 +48,14 @@ const Scheduling: React.FC = () => {
                     >
                         <ChevronLeft />Voltar
                     </Button>}
+
+                    {steps.findIndex((s) => s.name === 'confirmation') === currentStep && (
+                        <Button
+                            onClick={() => handleConfirm()}
+                        >
+                            Confirmar
+                        </Button>
+                    )}
                 </CardFooter>
             </Card>
 
