@@ -4,9 +4,11 @@ import { ChevronRight } from "lucide-react";
 import useSWR from "swr";
 import { fetcher } from "@/helpers/fetcher";
 import { StepsProps } from "../types/steps-props.type";
+import { useParams } from "next/navigation";
 
-export default function CategoryComponent({onUpdate, onNext,}: StepsProps){
-    const { data } = useSWR<Category[]>('/category/list/jean-alex4', fetcher, {suspense: true});
+export default function CategoryComponent({onUpdate, onNext}: StepsProps){
+    const { linkName } = useParams();
+    const { data } = useSWR<Category[]>(`/category/list/${linkName}`, fetcher, {suspense: true});
 
     if(data?.length === 0) return <div>No data</div>;
     if(!data) return <div>Algum erro ocorreu</div>;
