@@ -13,7 +13,7 @@ interface HoursEmployee {
 
 
 export default function HoursComponent({onNext, onPrevious, onUpdate, stepData}: StepsProps){
-    const { data } = useSWR<HoursEmployee>(`/employee/${stepData.professionalId}/available-times?date=2024-12-23&serviceId=${stepData.serviceId}`, fetcher, {suspense: true});
+    const { data } = useSWR<HoursEmployee>(`/employee/${stepData.employeeId}/available-times?date=2024-12-23&serviceId=${stepData.serviceId}`, fetcher, {suspense: true});
     
     if(data?.availableTimes?.length === 0) return <div>No data</div>;
     if(!data) return <div>Algum erro ocorreu</div>;

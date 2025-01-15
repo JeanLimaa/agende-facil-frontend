@@ -1,6 +1,6 @@
 export interface StepData {
-    categoryId: string;
-    serviceId: string;
-    professionalId: string;
+    categoryId: number;
+    serviceId: number;
+    employeeId: string;
     hours: string;
 }
