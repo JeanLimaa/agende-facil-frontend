@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { StepsProps } from "../types/steps-props.type";
 import { ConfirmationData } from "@/types/appoitment-confirmation.type";
 import { useAppointment } from "@/hooks/useAppointment";
+import { useConfirmAppointment } from "@/hooks/useConfirmAppointment";
+import InputMask from "react-input-mask";
 
 function ErrorText({ errorMessage }: { errorMessage: string }) {
     return <span className="text-red-500 text-xs ml-2">{errorMessage}</span>;
@@ -20,11 +22,10 @@ export default function ConfirmationComponent({
         setConfirmationData: setData,
         confirmationErrors: errors,
         setConfirmationErrors: setErrors
-    } = useAppointment();
+    } = useConfirmAppointment();
 
     const handleChange = (field: keyof ConfirmationData, value: string) => {
-        setData((prev) => ({ ...prev, [field]: value }));
-        setErrors((prev) => ({ ...prev, [field]: undefined })); // Limpa o erro ao modificar o campo
+        setData(field, value);
     };
 
     return (
@@ -51,13 +52,13 @@ export default function ConfirmationComponent({
                         Seu telefone
                         {errors.phone && <ErrorText errorMessage={errors.phone} />}
                     </Label>
-                    <Input
-                        id="phone"
-                        placeholder="Ex: (99) 99999-9999"
+                    <InputMask
+                        mask="(99) 99999-9999"
                         value={data.phone}
                         onChange={(e) => handleChange("phone", e.target.value)}
-                        className={errors.phone ? "border-red-500" : ""}
-                    />
+                    >
+                        {(inputProps) => <Input {...inputProps} id="phone" className={errors.phone ? "border-red-500" : ""} />}
+                    </InputMask>
                 </div>
             </div>
 
