@@ -8,7 +8,7 @@ export function useAppointment() {
         categoryId: 0,
         serviceId: 0,
         employeeId: '',
-        hours: '',
+        date: '',
     });
 
     const currentStep = steps.findIndex((s) => s.name === step);

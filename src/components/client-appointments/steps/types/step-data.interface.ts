@@ -2,5 +2,5 @@ export interface StepData {
     categoryId: number;
     serviceId: number;
     employeeId: string;
-    hours: string;
+    date: string | Date;
 }
