@@ -19,8 +19,7 @@ const Scheduling: React.FC = () => {
         previousStep,
         navigateToStep,
         handleDataUpdate,
-        CurrentComponent,
-        //handleConfirm
+        CurrentComponent
     } = useAppointment();
     
     const {

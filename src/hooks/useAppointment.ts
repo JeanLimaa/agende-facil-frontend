@@ -1,27 +1,15 @@
 import { StepData } from "@/components/client-appointments/steps/types/step-data.interface";
 import { steps, StepType as Step } from "@/constants/steps.constant";
-import api from "@/services/apiService";
 import { useEffect, useState } from "react";
-import { toast } from "./use-toast";
-import { z } from "zod";
-import { ConfirmationData } from "@/types/appoitment-confirmation.type";
-import { confirmationSchema } from "@/schemas/appointment-confirmation";
 
 export function useAppointment() {
     const [step, setStep] = useState<Step>('category');
     const [stepData, setStepData] = useState<StepData>({
-        categoryId: '',
-        serviceId: '',
-        professionalId: '',
+        categoryId: 0,
+        serviceId: 0,
+        employeeId: '',
         hours: '',
     });
-
-    
-    const [confirmationData, setConfirmationData] = useState<ConfirmationData>({
-        name: "",
-        phone: "",
-    });
-    const [confirmationErrors, setConfirmationErrors] = useState<Partial<Record<keyof ConfirmationData, string>>>({});
 
     const currentStep = steps.findIndex((s) => s.name === step);
 
@@ -39,7 +27,7 @@ export function useAppointment() {
         setStep(steps[stepIndex].name);
     }
 
-    const handleDataUpdate = (field: keyof StepData, value: string) => {
+    const handleDataUpdate = (field: keyof StepData, value: string | number) => {
         setStepData((prev) => ({ ...prev, [field]: value }));
     };
 
@@ -60,36 +48,7 @@ export function useAppointment() {
         };
     }, [currentStep]);
 
-    const handleConfirm = async () => {
-        try {
-            confirmationSchema.parse(confirmationData);
-            console.log(confirmationData)
-            alert('Agendamento realizado com sucesso');
-            toast({description: 'Agendamento realizado com sucesso', variant: 'default'});
-            const response = await api.post('/appointments', stepData);
-
-            if (response.status === 201) {
-                toast({description: 'Agendamento realizado com sucesso', variant: 'default'});
-            }
-
-            return response;
-        } catch (error) {
-            alert(error);
-            if (error instanceof z.ZodError) {
-                const fieldErrors: Partial<Record<keyof ConfirmationData, string>> = {};
-                error.errors.forEach((err) => {
-                    if (err.path[0]) {
-                        fieldErrors[err.path[0] as keyof ConfirmationData] = err.message;
-                    }
-                });
-                setConfirmationErrors(fieldErrors);
-            }
-            
-        }
-    }
-
     return {
-        handleConfirm,
         currentStep,
         stepData,
         nextStep,
@@ -97,9 +56,5 @@ export function useAppointment() {
         navigateToStep,
         handleDataUpdate,
         CurrentComponent,
-        confirmationData,
-        setConfirmationData,
-        confirmationErrors,
-        setConfirmationErrors,
     }
 }

@@ -10,8 +10,8 @@ export default function ProfessionalComponent({onNext, onPrevious, onUpdate, ste
     if(professionals?.length === 0) return <div>No data</div>;
     if(!professionals) return <div>Algum erro ocorreu</div>;
 
-    const handleSelect = (professional: string) => {
-        onUpdate("professionalId", professional);
+    const handleSelect = (professionalId: number) => {
+        onUpdate("employeeId", professionalId);
         onNext();
     };
 
@@ -22,7 +22,7 @@ export default function ProfessionalComponent({onNext, onPrevious, onUpdate, ste
                     <div key={item.id} className="flex items-center justify-between p-2 border-b border-gray-200">
                         <h3 className="font-semibold text-xl">{item.name}</h3>
                         
-                        <Button onClick={() => handleSelect(String(item.id))}>
+                        <Button onClick={() => handleSelect(item.id)}>
                             <ChevronRight />    
                         </Button>
                     </div>
