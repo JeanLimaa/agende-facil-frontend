@@ -9,6 +9,7 @@ import { StepIndicator } from './StepsIndicator';
 import { StepData } from './types/step-data.interface';
 import { Skeleton } from './Skeleton';
 import { useAppointment } from '@/hooks/useAppointment';
+import { useConfirmAppointment } from '@/hooks/useConfirmAppointment';
 
 const Scheduling: React.FC = () => {
     const {
@@ -19,9 +20,15 @@ const Scheduling: React.FC = () => {
         navigateToStep,
         handleDataUpdate,
         CurrentComponent,
-        handleConfirm
+        //handleConfirm
     } = useAppointment();
     
+    const {
+        handleConfirm
+    } = useConfirmAppointment();
+
+    const isConfirmationStep = steps.findIndex((s) => s.name === 'confirmation') === currentStep;
+
     return (
         <div className="flex flex-col items-center gap-6 p-4">
             <StepIndicator currentStep={currentStep} navigateToStep={navigateToStep} />
@@ -49,9 +56,9 @@ const Scheduling: React.FC = () => {
                         <ChevronLeft />Voltar
                     </Button>}
 
-                    {steps.findIndex((s) => s.name === 'confirmation') === currentStep && (
+                    {isConfirmationStep && (
                         <Button
-                            onClick={() => handleConfirm()}
+                            onClick={() => handleConfirm(stepData)}
                         >
                             Confirmar
                         </Button>
