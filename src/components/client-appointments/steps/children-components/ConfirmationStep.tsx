@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { StepsProps } from "../types/steps-props.type";
 import { ConfirmationData } from "@/types/appoitment-confirmation.type";
-import { useAppointment } from "@/hooks/useAppointment";
 import { useConfirmAppointment } from "@/hooks/useConfirmAppointment";
 import InputMask from "react-input-mask";
+import { formatDateInBrasiliaTimezone } from "@/helpers/date";
 
 function ErrorText({ errorMessage }: { errorMessage: string }) {
     return <span className="text-red-500 text-xs ml-2">{errorMessage}</span>;
@@ -76,8 +76,8 @@ export default function ConfirmationComponent({
                 </div>
 
                 <div className="flex flex-col gap-2">
-                    <Label>Horário</Label>
-                    <p className="text-gray-600">{stepData.hours}</p>
+                    <Label>Data e Horário</Label>
+                    <p className="text-gray-600">{formatDateInBrasiliaTimezone(stepData.date)}</p>
                 </div>
 
                 <div className="flex flex-col gap-2">
