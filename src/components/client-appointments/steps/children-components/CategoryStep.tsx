@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Category } from "@/interfaces/appointments/api-data/Category.interface";
 import { ChevronRight } from "lucide-react";

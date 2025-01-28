@@ -6,7 +6,7 @@ export function useAppointment() {
     const [step, setStep] = useState<Step>('category');
     const [stepData, setStepData] = useState<StepData>({
         categoryId: 0,
-        serviceId: 0,
+        serviceId: [],
         employeeId: '',
         date: '',
     });

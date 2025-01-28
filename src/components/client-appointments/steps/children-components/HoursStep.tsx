@@ -17,7 +17,7 @@ export default function HoursComponent({onNext, onUpdate, stepData}: StepsProps)
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     
     const { data, error } = useSWR<HoursEmployee>(
-        selectedDate ? `/employee/${stepData.employeeId}/available-times?date=${selectedDate}&serviceId=${stepData.serviceId}` : null, 
+        selectedDate ? `/employee/${stepData.employeeId}/available-times?date=${selectedDate}` : null, 
         fetcher, 
         { suspense: true }
     );

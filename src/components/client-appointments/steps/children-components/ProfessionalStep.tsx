@@ -5,7 +5,7 @@ import { ChevronRight } from "lucide-react";
 import { StepsProps } from "../types/steps-props.type";
 
 export default function ProfessionalComponent({onNext, onPrevious, onUpdate, stepData}: StepsProps){
-    const { data: professionals } = useSWR<any[]>(`/employee-services/list/${stepData.serviceId}`, fetcher, {suspense: true});
+    const { data: professionals } = useSWR<any[]>(`/employee-services/list/${stepData.categoryId}`, fetcher, {suspense: true});
 
     if(professionals?.length === 0) return <div>No data</div>;
     if(!professionals) return <div>Algum erro ocorreu</div>;

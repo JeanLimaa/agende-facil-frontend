@@ -29,8 +29,8 @@ export default function ServicesComponent({ onUpdate, onNext, stepData }: StepsP
             toast({description: "Selecione ao menos um serviço", variant: "destructive"});
             return;
         };
-         console.log("serviceId", Array.from(selectedServices), selectedServices);
-        onUpdate("serviceId", Array.from(selectedServices)[0]);
+        
+        onUpdate("serviceId", Array.from(selectedServices));
         onNext();
     };
 
