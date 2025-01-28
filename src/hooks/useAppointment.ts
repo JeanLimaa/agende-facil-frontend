@@ -6,9 +6,10 @@ export function useAppointment() {
     const [step, setStep] = useState<Step>('category');
     const [stepData, setStepData] = useState<StepData>({
         categoryId: 0,
-        serviceId: [],
+        services: [],
         employeeId: '',
         date: '',
+        employeeName: '',
     });
 
     const currentStep = steps.findIndex((s) => s.name === step);

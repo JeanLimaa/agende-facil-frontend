@@ -67,12 +67,14 @@ export default function ConfirmationComponent({
 
                 <div className="flex flex-col gap-2">
                     <Label>Profissional</Label>
-                    <p className="text-gray-600">{stepData.categoryId}</p>
+                    <p className="text-gray-600">{stepData.employeeName}</p>
                 </div>
 
                 <div className="flex flex-col gap-2">
                     <Label>Serviços</Label>
-                    <p className="text-gray-600">{stepData.serviceId}</p>
+                    {stepData.services.map((service) => (
+                        <p key={service.id} className="text-gray-600">{service.name}</p>
+                    ))}
                 </div>
 
                 <div className="flex flex-col gap-2">

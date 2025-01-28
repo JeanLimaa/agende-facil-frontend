@@ -12,14 +12,14 @@ export default function ServicesComponent({ onUpdate, onNext, stepData }: StepsP
     if (data?.length === 0) return <div>A empresa ainda não possui serviços associados.</div>;
     if (!data) return <div>Algum erro ocorreu</div>;
 
-    const [selectedServices, setSelectedServices] = useState<Set<number>>(new Set());
+    const [selectedServices, setSelectedServices] = useState<Set<Service>>(new Set());
 
-    const toggleSelectService = (serviceId: number) => {
+    const toggleSelectService = (service: Service) => {
         const newSelection = new Set(selectedServices);
-        if (newSelection.has(serviceId)) {
-            newSelection.delete(serviceId); // Remove se já estiver selecionado
+        if (newSelection.has(service)) {
+            newSelection.delete(service); // Remove se já estiver selecionado
         } else {
-            newSelection.add(serviceId); // Adiciona se não estiver selecionado
+            newSelection.add(service); // Adiciona se não estiver selecionado
         }
         setSelectedServices(newSelection);
     };
@@ -30,7 +30,7 @@ export default function ServicesComponent({ onUpdate, onNext, stepData }: StepsP
             return;
         };
         
-        onUpdate("serviceId", Array.from(selectedServices));
+        onUpdate("services", Array.from(selectedServices));
         onNext();
     };
 
@@ -40,12 +40,12 @@ export default function ServicesComponent({ onUpdate, onNext, stepData }: StepsP
 
             <div className="flex flex-col gap-5">
                 {data.map((item) => {
-                    const isSelected = selectedServices.has(item.id);
+                    const isSelected = selectedServices.has(item);
                     return (
                         <div
                             key={item.id}
                             className={`flex items-center justify-between p-6 border rounded-lg shadow-sm cursor-pointer ${isSelected ? "bg-gray-300 text-white" : "bg-white"}`}
-                            onClick={() => toggleSelectService(item.id)}
+                            onClick={() => toggleSelectService(item)}
                         >
                             <div>
                                 <h3 className="font-semibold text-lg">{item.name}</h3>
@@ -56,7 +56,7 @@ export default function ServicesComponent({ onUpdate, onNext, stepData }: StepsP
                                     variant={`outline`}
                                     onClick={(e) => {
                                         e.stopPropagation(); // Impede que o clique no botão altere a seleção
-                                        toggleSelectService(item.id);
+                                        toggleSelectService(item);
                                     }}
                                 >
                                     {isSelected ? "Selecionado" : "Selecionar"}

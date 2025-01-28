@@ -41,10 +41,10 @@ export function useConfirmAppointment() {
         setConfirmationData(field, value);
     };
 
-    const handleConfirm = async (stepData: StepData) => {
+    const handleConfirm = async (stepData: StepData & {serviceId: number[]}) => {
         try {
             confirmationSchema.parse(confirmationData);
-            
+
             const response = await api.post('/appointment', stepData);
 
             toast({description: 'Agendamento realizado com sucesso', variant: 'default'});

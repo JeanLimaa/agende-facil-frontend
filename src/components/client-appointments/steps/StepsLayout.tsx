@@ -57,7 +57,10 @@ const Scheduling: React.FC = () => {
 
                     {isConfirmationStep && (
                         <Button
-                            onClick={() => handleConfirm(stepData)}
+                            onClick={() => handleConfirm({
+                                ...stepData,
+                                 serviceId: stepData.services.map((service) => service.id)
+                            })}
                         >
                             Confirmar
                         </Button>
