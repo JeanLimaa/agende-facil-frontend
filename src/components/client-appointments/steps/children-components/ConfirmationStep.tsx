@@ -8,6 +8,7 @@ import { ConfirmationData } from "@/types/appoitment-confirmation.type";
 import { useConfirmAppointment } from "@/hooks/useConfirmAppointment";
 import InputMask from "react-input-mask";
 import { formatDateInBrasiliaTimezone } from "@/helpers/date";
+import { formatToCurrency } from "@/helpers/currency";
 
 function ErrorText({ errorMessage }: { errorMessage: string }) {
     return <span className="text-red-500 text-xs ml-2">{errorMessage}</span>;
@@ -27,6 +28,10 @@ export default function ConfirmationComponent({
     const handleChange = (field: keyof ConfirmationData, value: string) => {
         setData(field, value);
     };
+
+    function sumServicePrices() {
+        return stepData.services.reduce((sum, service) => sum + service.price, 0);
+    }
 
     return (
         <div className="flex flex-col gap-10">
@@ -84,7 +89,7 @@ export default function ConfirmationComponent({
 
                 <div className="flex flex-col gap-2">
                     <Label>Valor</Label>
-                    <p className="text-gray-600">R$ 100,00</p>
+                     <p>{formatToCurrency(sumServicePrices())}</p>
                 </div>
             </div>
 

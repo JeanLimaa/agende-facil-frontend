@@ -5,6 +5,7 @@ import useSWR from "swr";
 import { StepsProps } from "../types/steps-props.type";
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
+import { formatToCurrency } from "@/helpers/currency";
 
 export default function ServicesComponent({ onUpdate, onNext, stepData }: StepsProps) {
     const { data } = useSWR<Service[]>(`/service/list/category/${stepData.categoryId}`, fetcher, { suspense: true });
@@ -49,7 +50,8 @@ export default function ServicesComponent({ onUpdate, onNext, stepData }: StepsP
                         >
                             <div>
                                 <h3 className="font-semibold text-lg">{item.name}</h3>
-                                <p className="text-gray-600">Descrição do serviço...</p>
+                                {item.description && <p className="text-gray-600">{item.description}</p>}
+                                <p className="text-gray-600">{formatToCurrency(item.price)}</p>
                             </div>
                                 <Button
                                     className={`w-32 ${isSelected && "bg-green-400 hover:bg-green-500 text-white"}`}
